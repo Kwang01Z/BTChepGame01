@@ -8,30 +8,31 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CapsuleCollider2D m_Collider;
     [SerializeField] LayerMask m_GroundLayer;
     [SerializeField] LayerMask m_CeilingLayer;
+    [SerializeField] Transform m_ThrowPos;
     AnimatorCharacter m_AnimatorCharacter;
     public float m_Speed = 7f;
     public float m_JumpPow = 10f;
     public float m_ResetAttackTimer = 0.5f;
-    public Transform m_ThrowPosition;
-    public GameObject m_MyKunai;
+
+    Vector3 feetPos;
+    Transform m_CurrentGroundTrasform = null;
+    Ground m_CurrentGround = null;
+    KunaiSpawner m_KunaiSpawner;
+
     bool m_CanJumpable = true;
     bool m_IsGrounded;
     bool m_IsAttack;
     float horizontalDir;
-    Ground m_CurrentGround = null;
-    Vector3 feetPos;
-    Transform m_CurrentGroundTrasform = null;
     private void Reset()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_Collider = GetComponent<CapsuleCollider2D>();
         m_GroundLayer = 1 << 31;
         m_CeilingLayer = 1 << 30;
-        m_KunaiSpawner = GetComponentInChildren<ObjectSpawner>();
+        
     }
     private void Awake()
     {
-        m_KunaiSpawner.
     }
     private void Update()
     {
@@ -116,7 +117,7 @@ public class PlayerController : MonoBehaviour
     }
     public void ThrowKunai()
     {
-        Debug.Log("Throw");
+        m_KunaiSpawner.Get(m_ThrowPos.position);
     }
     void ResetAttack()
     {
@@ -148,4 +149,9 @@ public class PlayerController : MonoBehaviour
             GoingDown();
         }
     }
+    public void SetWeaponSpawner(KunaiSpawner a_Spawner)
+    {
+        m_KunaiSpawner = a_Spawner;
+    }
+    
 }

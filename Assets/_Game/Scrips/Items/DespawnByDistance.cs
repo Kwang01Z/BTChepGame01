@@ -6,6 +6,7 @@ public class DespawnByDistance : MonoBehaviour
 {
     public float m_Distance = 50f;
     Vector3 m_OriginPos;
+    KunaiSpawner m_KunaiSpawner;
     void Start()
     {
         m_OriginPos = transform.position;
@@ -16,7 +17,12 @@ public class DespawnByDistance : MonoBehaviour
     {
         if (Vector3.Distance(m_OriginPos, transform.position) >= m_Distance)
         {
-            //gameObject.SetActive(false);
+            m_KunaiSpawner?.Free(gameObject);
         }
+    }
+    public void SetSpawner(KunaiSpawner spawner)
+    { 
+        if(m_KunaiSpawner == null)
+        m_KunaiSpawner = spawner;
     }
 }
