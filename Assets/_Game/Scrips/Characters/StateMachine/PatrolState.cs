@@ -27,6 +27,5 @@ public class PatrolState : IState
 
     public void OnExit(EnemyController enemy)
     {
-        enemy.StopMoving();
     }
 }

@@ -8,12 +8,14 @@ public class PlayerCollection : MonoBehaviour
     int m_CoinCount;
     private void Start()
     {
+        m_CoinCount = PlayerPrefs.GetInt("_CoinCount", 0);
         m_CoinCountText.SetText(GetCoinCountText());
     }
     public void AddCoint()
     {
         m_CoinCount++;
         m_CoinCountText.SetText(GetCoinCountText());
+        PlayerPrefs.SetInt("_CoinCount",m_CoinCount);
     }
     string GetCoinCountText()
     {

@@ -8,6 +8,7 @@ public class DeathZone : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Player"))
         {
+            PlayerPrefs.SetInt("_CoinCount", 0);
             OnDead();
         }
     }

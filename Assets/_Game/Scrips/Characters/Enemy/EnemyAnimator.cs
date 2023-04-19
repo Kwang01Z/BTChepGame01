@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class EnemyAnimator : AnimatorCharacter
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] EnemyController m_EnemyController;
 
-    // Update is called once per frame
-    void Update()
+    protected override void Reset()
     {
-        
+        base.Reset();
+        m_EnemyController = GetComponentInParent<EnemyController>();
+    }
+    public void DamageObject()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(m_EnemyController.transform.position, m_EnemyController.m_AttackRange, LayerMask.GetMask("Player"));
+        if (collider != null)
+        {
+            if (collider.GetComponent<CharacterHealth>())
+                collider.GetComponent<CharacterHealth>()?.TakeDamage(m_EnemyController.m_AttackDamage);
+        }
     }
 }

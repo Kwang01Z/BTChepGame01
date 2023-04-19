@@ -13,16 +13,19 @@ public class PlayerController : MonoBehaviour
     public float m_Speed = 7f;
     public float m_JumpPow = 10f;
     public float m_ResetAttackTimer = 0.5f;
+    public float m_AttackRange;
+    public float m_AttackDamage;
 
     Vector3 feetPos;
     Transform m_CurrentGroundTrasform = null;
     Ground m_CurrentGround = null;
     KunaiSpawner m_KunaiSpawner;
 
+    bool m_IsMovingLocked;
     bool m_CanJumpable = true;
     bool m_IsGrounded;
     bool m_IsAttack;
-    float horizontalDir;
+    public float horizontalDir;
     private void Reset()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -31,21 +34,24 @@ public class PlayerController : MonoBehaviour
         m_CeilingLayer = 1 << 30;
         
     }
-    private void Awake()
-    {
-    }
     private void Update()
     {
+        if (m_IsMovingLocked) return;
         GroundCollionMachine();
-        AttackUpdate();
+        //AttackUpdate();
+        Run();
         ThrowUpdate();
         JumpUpdate();
-        RunUpdate();
+        //RunUpdate();
         JumpCutUpdate();
     }
     void RunUpdate()
     {
         horizontalDir = Input.GetAxisRaw("Horizontal");
+        Run();
+    }
+    void Run()
+    {
         m_AnimatorCharacter.GetAnimator().SetFloat("speed", Mathf.Abs(horizontalDir));
         if (Mathf.Abs(horizontalDir) != 0f)
         {
@@ -57,9 +63,20 @@ public class PlayerController : MonoBehaviour
             m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
         }
     }
+    public void SetMove(int a_horz)
+    {
+        horizontalDir = a_horz;
+    }
     void JumpUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && m_CanJumpable)
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
+    }
+    public void Jump()
+    {
+        if (m_CanJumpable)
         {
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_JumpPow);
             m_CanJumpable = false;
@@ -97,7 +114,7 @@ public class PlayerController : MonoBehaviour
     {
         m_AnimatorCharacter = animator;
     }
-    void Attack()
+    public void Attack()
     {
         if (!m_IsAttack)
         {
@@ -106,7 +123,7 @@ public class PlayerController : MonoBehaviour
             Invoke(nameof(ResetAttack), m_ResetAttackTimer);
         }
     }
-    void Throw()
+    public void Throw()
     {
         if (!m_IsAttack)
         {
@@ -118,6 +135,10 @@ public class PlayerController : MonoBehaviour
     public void ThrowKunai()
     {
         m_KunaiSpawner.Get(m_ThrowPos.position);
+    }
+    public void FreeKunai(GameObject a_gameObject)
+    {
+        m_KunaiSpawner.Free(a_gameObject);
     }
     void ResetAttack()
     {
@@ -153,5 +174,13 @@ public class PlayerController : MonoBehaviour
     {
         m_KunaiSpawner = a_Spawner;
     }
-    
+    public void SetMovingLock(bool a_Lock)
+    {
+        m_IsMovingLocked = a_Lock;
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(m_ThrowPos.position, m_AttackRange);
+    }
 }

@@ -7,7 +7,7 @@ public class DespawnByDistance : MonoBehaviour
     public float m_Distance = 50f;
     Vector3 m_OriginPos;
     KunaiSpawner m_KunaiSpawner;
-    void Start()
+    void OnEnable()
     {
         m_OriginPos = transform.position;
     }

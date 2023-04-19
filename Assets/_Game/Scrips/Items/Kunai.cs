@@ -5,6 +5,8 @@ using UnityEngine;
 public class Kunai : MonoBehaviour
 {
     [SerializeField] Rigidbody2D m_Rigidbody2D;
+    [SerializeField] float m_AttackRange;
+    [SerializeField] float m_AttackDamage;
     PlayerController m_PlayerController;
     public float m_Speed = 10f;
     Vector2 m_Direction;
@@ -35,5 +37,21 @@ public class Kunai : MonoBehaviour
         {
             m_PlayerController = a_controller; 
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision != null)
+        {
+            if (collision.GetComponent<EnemyHealth>())
+            {
+                collision.GetComponent<CharacterHealth>()?.TakeDamage(m_AttackDamage);
+                m_PlayerController.FreeKunai(this.gameObject);
+            }
+        }
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, m_AttackRange);
     }
 }

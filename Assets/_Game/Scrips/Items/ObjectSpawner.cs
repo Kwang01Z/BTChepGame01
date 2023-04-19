@@ -15,17 +15,17 @@ public class ObjectSpawner
         for (int i = 0; i < a_initialSize; ++i)
         {
             GameObject obj = Object.Instantiate(a_original);
+            obj.name = obj.name + "_"+i;
             Free(a_parent, obj);
         }
     }
     public GameObject Get(Transform parent, Vector3 pos, Quaternion quat)
     {
         GameObject ret = m_FreeInstances.Count > 0 ? m_FreeInstances.Pop() : Object.Instantiate(m_Original);
-        ret.SetActive(true);
         ret.transform.parent = parent;
         ret.transform.position = pos;
         ret.transform.rotation = quat;
-
+        ret.SetActive(true);
         return ret;
     }
     public void Free(Transform root, GameObject obj)

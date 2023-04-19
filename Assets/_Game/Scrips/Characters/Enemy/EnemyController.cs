@@ -10,9 +10,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] Vector2 m_PatrolPosRight;
     public float m_Speed = 7f;
     public float m_AttackRange = 10f;
+    public float m_AttackDamage = 10f;
+
     IState m_CurrentState;
     bool m_IsFacingRight;
-    public Transform m_Target;
+    Transform m_Target;
     private void Reset()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -38,6 +40,7 @@ public class EnemyController : MonoBehaviour
     {
         if (!m_CurrentState.GetType().Equals(typeof(AttackState)) && IsTargetInRange())
         {
+            StopMoving();
             ChangeState(new AttackState());
         }
         ChangeDirection();
@@ -45,12 +48,13 @@ public class EnemyController : MonoBehaviour
     }
     public void StopMoving()
     {
+        if (!m_CurrentState.GetType().Equals(typeof(IdleState))) ChangeState(new IdleState());
         m_Rigidbody2D.velocity = Vector2.zero;
         m_EnemyAnimator.GetAnimator().SetFloat("speed",0);
     }
     public void Moving()
     {
-        m_Rigidbody2D.velocity = transform.right * m_Speed;
+        m_Rigidbody2D.velocity = (m_IsFacingRight?Vector2.right:Vector2.left)* m_Speed;
         m_EnemyAnimator.GetAnimator().SetFloat("speed", 1);
     }
     public void ChangeDirection()
@@ -91,6 +95,10 @@ public class EnemyController : MonoBehaviour
     public Transform GetTarget()
     {
         return m_Target;
+    }
+    public bool IsFacingRight()
+    {
+        return m_IsFacingRight;
     }
     private void OnDrawGizmosSelected()
     {

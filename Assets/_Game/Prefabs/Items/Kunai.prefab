@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Rigidbody2D: {fileID: 6175332653940168551}
+  m_AttackRange: 0.7
+  m_AttackDamage: 10
   m_Speed: 10
 --- !u!50 &6175332653940168551
 Rigidbody2D:
@@ -117,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc807f2e1dddea4cab1483eddf81979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Distance: 50
+  m_Distance: 10
 --- !u!1 &6175332654684902727
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +192,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 502942435
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: a4aad7854c843684eb5dd1e6f2bd8945, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

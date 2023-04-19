@@ -10,7 +10,6 @@ public class AttackState : IState
     {
         m_TimeToAttack = 1f;
         m_Timer = 0.5f;
-        Debug.Log("Start Attack");
     }
 
     public void OnExecute(EnemyController enemy)
