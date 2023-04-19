@@ -20,4 +20,8 @@ public class EnemyAnimator : AnimatorCharacter
                 collider.GetComponent<CharacterHealth>()?.TakeDamage(m_EnemyController.m_AttackDamage);
         }
     }
+    public void Dead()
+    {
+        Destroy(transform.parent.gameObject);
+    }
 }
